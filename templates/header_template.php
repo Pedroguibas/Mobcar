@@ -9,13 +9,30 @@
     </head>
     <body>
         <header class="container">
-            <div class="headerContainer justify-content-between">
-                <div class="brandContainer col-1">
-                    <img src="assets/brand.png" alt="Logo Mobcar" class="w-100">
+            <nav class="navbar navbar-expand-lg">
+                <div class="headerContainer row justify-content-between align-items-center">
+                    <div class="brandContainer col-1">
+                        <img src="assets/brand.png" alt="Logo Mobcar" class="w-100">
+                    </div>
+                    <div id="navContainer" class="col-11">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link active">Home</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="signup.php" class="nav-link">Sign-up</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="signin.php" class="nav-link">Log-in</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <nav class="collapse navbar-collapse">
-
             </nav>
         </header>
     </body>
