@@ -1,8 +1,11 @@
 <?php
-    session_start();
+    if(!isset($_SESSION))
+        session_start();
     $_SESSION['baseUrl'] =  'http://' . $_SERVER['SERVER_NAME'] . '/Mobcar/';
     $baseurl = $_SESSION['baseUrl'];
 
+    if (!isset($active))
+        $active = '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -27,17 +30,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav container-fluid d-flex justify-content-end">
                         <li class="nav-item">
-                            <a href="<?= $baseurl ?>" class="nav-link d-flex justify-content-end">Home</a>
+                            <a href="<?= $baseurl ?>" class="nav-link <?= $active == 'home' ? 'active' : '' ?> d-flex justify-content-end">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link d-flex justify-content-end">Sign-up</a>
+                            <a href="#" class="nav-link <?= $active == 'signup' ? 'active' : '' ?> d-flex justify-content-end">Sign-up</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link d-flex justify-content-end">Log-in</a>
+                            <a href="#" class="nav-link <?= $active == 'login' ? 'active' : '' ?> d-flex justify-content-end">Log-in</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </header>
-    </body>
-</html>
