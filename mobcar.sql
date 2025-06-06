@@ -11,22 +11,35 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS client (
-    clientID INT PRIMARY KEY,
-    cnh VARCHAR(11) PRIMARY KEY
+    clientID INT,
+    cnh VARCHAR(11)
 );
+
+ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
 
 ALTER TABLE client 
 ADD CONSTRAINT fk_client_user
-FOREIGN KEY clientID 
-REFERENCES user(id)
+FOREIGN KEY (clientID) 
+REFERENCES user(userID)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
-CREATE TABLE IF NOT EXISTS marca (
-    marcaID INT AUTO_INCREMENT PRIMARY KEY,
-    marcaNome VARCHAR(255) NOT NULL,
-
+CREATE TABLE IF NOT EXISTS endereco (
+    enderecoID INT AUTO_INCREMENT PRIMARY KEY,
+    estado ENUM('AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO') NOT NULL,
+    cidade VARCHAR(255) NOT NULL,
+    rua VARCHAR(255) NOT NULL,
+    numero VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS unidade (
+    unidadeID INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    unidadeEnderecoID INT NOT NULL
+);
+
+ALTER TABLE unidade ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (unidadeEnderecoID) REFERENCES endereco(enderecoID);
+
 
 CREATE TABLE IF NOT EXISTS car (
     carID INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,15 +47,27 @@ CREATE TABLE IF NOT EXISTS car (
     marca VARCHAR(255) NOT NULL,
     modelo VARCHAR(255) NOT NULL,
     diaria float NOT NULL,
+    unidadeAtual INT NOT NULL,
     cor VARCHAR(255) NOT NULL
 );
 
+ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (unidadeAtual) REFERENCES unidade(unidadeID);
+
 CREATE TABLE IF NOT EXISTS rent (
-    rentUserID INT PRIMARY KEY,
-    rentCarID INT PRIMARY KEY,
+    rentUserID INT NOT NULL,
+    rentCarID INT NOT NULL,
     dataRent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    dataDevolucao TIMESTAMP
+    dataDevolucao DATETIME
 );
 
-ALTER TABLE rent ADD CONSTRAINT fk_rent_user FOREIGN KEY rentUserID REFERENCES user(userID);
-ALTER TABLE rent ADD CONSTRAINT fk_rent_car FOREIGN KEY rentCarID REFERENCES car(carID);
+ALTER TABLE RENT ADD CONSTRAINT pk_rent PRIMARY KEY (rentUserID, rentCarID);
+ALTER TABLE rent ADD CONSTRAINT fk_rent_user FOREIGN KEY (rentUserID) REFERENCES user(userID);
+ALTER TABLE rent ADD CONSTRAINT fk_rent_car FOREIGN KEY (rentCarID) REFERENCES car(carID);
+
+
+
+
+
+
+CREATE USER IF NOT EXISTS mobcar IDENTIFIED BY '911643';
+GRANT ALL ON mobcar.* TO mobcar IDENTIFIED BY '911643';
