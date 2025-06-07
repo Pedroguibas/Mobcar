@@ -2,27 +2,6 @@ CREATE DATABASE IF NOT EXISTS mobcar;
 
 USE mobcar;
 
-CREATE TABLE IF NOT EXISTS user (
-    userID INT AUTO_INCREMENT PRIMARY KEY,
-    userNome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    senha TEXT(1000) NOT NULL,
-    dataRegistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS client (
-    clientID INT,
-    cnh VARCHAR(11)
-);
-
-ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
-
-ALTER TABLE client 
-ADD CONSTRAINT fk_client_user
-FOREIGN KEY (clientID) 
-REFERENCES user(userID)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
 
 CREATE TABLE IF NOT EXISTS endereco (
     enderecoID INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,32 +11,66 @@ CREATE TABLE IF NOT EXISTS endereco (
     numero VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS unidade (
-    unidadeID INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    unidadeEnderecoID INT NOT NULL
+CREATE TABLE IF NOT EXISTS user (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    userName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    userPassword TEXT(1000) NOT NULL,
+    registerDate DATE DEFAULT CURRENT_DATE()
 );
 
-ALTER TABLE unidade ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (unidadeEnderecoID) REFERENCES endereco(enderecoID);
+CREATE TABLE IF NOT EXISTS client (
+    clientID INT,
+    cnh VARCHAR(11),
+    CLIENTEnderecoID INT NOT NULL
+);
+
+ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
+
+ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY clientEnderecoID REFERENCES endereco(enderecoID);
+
+ALTER TABLE client
+ADD CONSTRAINT fk_client_user
+FOREIGN KEY (clientID) 
+REFERENCES user(userID)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+CREATE TABLE IF NOT EXISTS bankCard (
+    cardID INT AUTO_INCREMENT PRIMARY KEY,
+    cardName VARCHAR(255) NOT NULL,
+    cardNumber VARCHAR(16) NOT NULL,
+    cvv CHAR(3) NOT NULL,
+    expiryDate char(5) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS branch (
+    branchID INT AUTO_INCREMENT PRIMARY KEY,
+    branchName VARCHAR(255) NOT NULL,
+    branchEnderecoID INT NOT NULL
+);
+
+ALTER TABLE unidade ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (branchEnderecoID) REFERENCES endereco(enderecoID);
 
 
 CREATE TABLE IF NOT EXISTS car (
     carID INT AUTO_INCREMENT PRIMARY KEY,
-    placa VARCHAR(7) NOT NULL,
-    marca VARCHAR(255) NOT NULL,
-    modelo VARCHAR(255) NOT NULL,
-    diaria float NOT NULL,
-    unidadeAtual INT NOT NULL,
-    cor VARCHAR(255) NOT NULL
+    plate VARCHAR(7) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    model VARCHAR(255) NOT NULL,
+    price FLOAT NOT NULL,
+    currentUnity INT NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    available TINYINT(1) DEFAULT 1
 );
 
-ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (unidadeAtual) REFERENCES unidade(unidadeID);
+ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (currentUnity) REFERENCES unity(unityID);
 
 CREATE TABLE IF NOT EXISTS rent (
     rentUserID INT NOT NULL,
     rentCarID INT NOT NULL,
-    dataRent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    dataDevolucao DATETIME
+    rentDate DATE DEFAULT CURRENT_DATE(),
+    dataDevolucao DATE
 );
 
 ALTER TABLE RENT ADD CONSTRAINT pk_rent PRIMARY KEY (rentUserID, rentCarID);

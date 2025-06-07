@@ -1,3 +1,5 @@
 .navbar {
+    padding-left: 2em;
+    padding-right: 2em;
     border-bottom: 1px solid #00000080;
 }
