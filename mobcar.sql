@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS client (
 
 ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
 
-ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY clientEnderecoID REFERENCES endereco(enderecoID);
+ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY (clientEnderecoID) REFERENCES endereco(enderecoID);
 
 ALTER TABLE client
 ADD CONSTRAINT fk_client_user
@@ -44,13 +44,22 @@ CREATE TABLE IF NOT EXISTS bankCard (
     expiryDate char(5) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS clientCard (
+    clientCard_clientID INT NOT NULL,
+    clientCard_cardID INT NOT NULL
+);
+
+ALTER TABLE clientCard ADD CONSTRAINT fk_clientCard_clientID FOREIGN KEY (clientCard_clientID) REFERENCES client(clientID);
+ALTER TABLE clientCard ADD CONSTRAINT fk_clientCard_cardID FOREIGN KEY (clientCard_cardID) REFERENCES bankCard(cardID);
+ALTER TABLE clientCard ADD CONSTRAINT pk_clientCard PRIMARY KEY (clientCard_cardID, clientCard_clientID);
+
 CREATE TABLE IF NOT EXISTS branch (
     branchID INT AUTO_INCREMENT PRIMARY KEY,
     branchName VARCHAR(255) NOT NULL,
     branchEnderecoID INT NOT NULL
 );
 
-ALTER TABLE unidade ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (branchEnderecoID) REFERENCES endereco(enderecoID);
+ALTER TABLE branch ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (branchEnderecoID) REFERENCES endereco(enderecoID);
 
 
 CREATE TABLE IF NOT EXISTS car (
@@ -59,12 +68,12 @@ CREATE TABLE IF NOT EXISTS car (
     brand VARCHAR(255) NOT NULL,
     model VARCHAR(255) NOT NULL,
     price FLOAT NOT NULL,
-    currentUnity INT NOT NULL,
+    currentBranch INT NOT NULL,
     color VARCHAR(255) NOT NULL,
     available TINYINT(1) DEFAULT 1
 );
 
-ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (currentUnity) REFERENCES unity(unityID);
+ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (currentBranch) REFERENCES branch(branchID);
 
 CREATE TABLE IF NOT EXISTS rent (
     rentUserID INT NOT NULL,
