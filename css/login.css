@@ -1,12 +1,64 @@
+@keyframes login_transition {
+    0% {
+        width: 50%;
+        right: 0;
+        left: auto;
+    }
+    35% {
+        width: 65%;
+        right: 0;
+    }
+    65% {
+        width: 65%;
+        right: 35%;
+    }
+    100% {
+        width: 50%;
+        right: 50%
+    }
+}
+
+@keyframes signup_transition {
+    0% {
+        width: 50%;
+        left: 0;
+        right: auto;
+    }
+    35% {
+        width: 65%;
+        left: 0;
+    }
+    65% {
+        width: 65%;
+        left: 35%;
+    }
+    100% {
+        width: 50%;
+        left: 50%
+    }
+}
+
 #loginMain {
     height: 100vh;
 }
 
 #loginBannerContainer {
     background-image: url("../assets/loginBanner.jpg");
+    position: relative;
     background-position-x: 10%;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+#loginBannerContainer img {
+    position: absolute;
+    top: 1em;
+    right: 2em;
+}
+
+#loginFormContainer {
+    max-height: 100vh;
+    overflow-y: scroll;
 }
 
 #login_signup_selector {
@@ -18,9 +70,18 @@
     content: '';
     position: absolute;
     bottom: 0px;
-    left: 0;
     width: 50%;
     border-bottom: 2px solid #00233B;
+}
+
+#login_signup_selector.left::after {
+    left: 0;
+    animation: login_transition ease-in-out 200ms;
+}
+
+#login_signup_selector.right::after {
+    right: 0;
+    animation: signup_transition ease-in-out 200ms;
 }
 
 #loginSelectorBtn,
@@ -30,7 +91,12 @@
     background: transparent;
 }
 
-@media screen and (max-width: 1024px) {
+.form-control:focus {
+    border-color: #00233B;
+    box-shadow: none;
+} 
+
+@media screen and (max-width: 991px) {
     #loginBannerContainer {
         display: none;
     }
