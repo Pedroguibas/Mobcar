@@ -36,10 +36,10 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                 <div id="loginForm" class="col-10">
                     <form action="" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
-                            <input type="email" class="form-control mb-4" id="loginEmailInput" placeholder="E-mail">
+                            <input type="email" class="form-control mb-4" name="email" id="loginEmailInput" placeholder="E-mail">
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="password" class="form-control" id="loginPasswordInput" placeholder="senha">
+                            <input type="password" class="form-control" name="password" id="loginPasswordInput" placeholder="senha">
                             <span class="invalid-feedback mt-1">E-mail ou senha inválidos.</span>
                         </div>
                         <div id="submitBtnContainer" class="d-flex justify-content-between col-10">
@@ -49,18 +49,18 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                     </form>
                 </div>
                 <div id="signupForm" class="d-none col-10">
-                    <form action="" class="d-flex flex-column align-items-center col-12">
+                    <form action="<?= $baseurl ?>forms/userSignup.php" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
-                            <input type="email" class="form-control" id="signupEmailInput" placeholder="Email">
+                            <input type="email" class="form-control" name="email" id="signupEmailInput" placeholder="Email" required>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control" id="signupNameInput" placeholder="Nome Completo">
+                            <input type="text" class="form-control" name="name" id="signupNameInput" placeholder="Nome Completo" required>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control" id="signupCnhInput" placeholder="Carteira Nacional de habilitação">
+                            <input type="text" class="form-control" name="cnh" id="signupCnhInput" placeholder="Carteira Nacional de habilitação" required>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control" id="signupCepInput" maxlength="9" placeholder="CEP">
+                            <input type="text" class="form-control" name="cep" id="signupCepInput" maxlength="9" placeholder="CEP" required>
                             <span class="invalid-feedback">CEP inválido.</span>
                             <div class="d-flex justify-content-center">
                                 <div id="searchingCpfSpinner" class="spinner-border mt-3" style="display: none;" role="status">
@@ -69,13 +69,13 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             </div>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control mb-5" id="signupStateInput" placeholder="Estado" disabled>
-                            <input type="text" class="form-control mb-5" id="signupCityInput" placeholder="Cidade" disabled>
-                            <input type="text" class="form-control mb-5" id="signupStreetInput" placeholder="Rua" disabled>
-                            <input type="number" class="form-control" id="signupNumberInput" placeholder="Número">
+                            <input type="text" class="form-control mb-5" name="state" id="signupStateInput" placeholder="Estado" readonly required>
+                            <input type="text" class="form-control mb-5" name="city" id="signupCityInput" placeholder="Cidade" readonly required>
+                            <input type="text" class="form-control mb-5" name="street" id="signupStreetInput" placeholder="Rua" readonly required>
+                            <input type="text" class="form-control" name="houseNumber" id="signupNumberInput" placeholder="Número" required>
                         </div>
                         <div class="form-group col-10 mb-4">
-                            <input type="password" class="form-control" id="signupPasswordInput" placeholder="Senha">
+                            <input type="password" class="form-control" name="password" id="signupPasswordInput" placeholder="Senha" required>
                         </div>
                         <div id="passwordRequirementsContainer">
                             <span id="passwordRequirementsTitle" class="mb-3">Sua senha deve conter ao menos:</span>
@@ -87,7 +87,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             </ul>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Senha">
+                            <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Senha" required>
                             <span class="invalid-feedback">As senhas não conferem.</span>
                         </div>
                         <div class="d-flex justify-content-end col-10">

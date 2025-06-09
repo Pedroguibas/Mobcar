@@ -46,6 +46,7 @@ $('#signupCepInput').on('focus', function() {
 $('#signupCepInput').on('input', function() {
     let str = $(this).val();
     let j=0;
+
     while (j < str.length) {
         if (!isDigit(str.charAt(j))) {
             str = str.slice(0,j) + str.slice(j+1, str.length);
@@ -54,6 +55,7 @@ $('#signupCepInput').on('input', function() {
             j++;
         }
     }
+    
     if (str.length >= 6 && isDigit(str.charAt(str.length -1))) {
         let i = str.indexOf('-');
         if (i != -1)
@@ -71,5 +73,17 @@ $('#signupCepInput').on('input', function() {
         }
         $(this).val(str);
         
+    } else {
+        $('#signupStateInput').val('');
+        $('#signupCityInput').val('');
+        $('#signupStreetInput').val('');
     }
 });
+
+// $('#signupForm form').on('submit', function(e) {
+//     e.preventDefault();
+
+//     $('input[diabled]').prop('disabled', false);
+
+//     $('#signupForm form')[0].submit();
+// })

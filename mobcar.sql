@@ -5,7 +5,8 @@ USE mobcar;
 
 CREATE TABLE IF NOT EXISTS endereco (
     enderecoID INT AUTO_INCREMENT PRIMARY KEY,
-    estado ENUM('AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO') NOT NULL,
+    cep VARCHAR(8) NOT NULL,
+    estado VARCHAR(255) NOT NULL,
     cidade VARCHAR(255) NOT NULL,
     rua VARCHAR(255) NOT NULL,
     numero VARCHAR(255) NOT NULL
@@ -22,12 +23,8 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS client (
     clientID INT,
     cnh VARCHAR(11),
-    CLIENTEnderecoID INT NOT NULL
+    clientEnderecoID INT NOT NULL
 );
-
-ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
-
-ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY (clientEnderecoID) REFERENCES endereco(enderecoID);
 
 ALTER TABLE client
 ADD CONSTRAINT fk_client_user
@@ -35,6 +32,11 @@ FOREIGN KEY (clientID)
 REFERENCES user(userID)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
+
+ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
+
+ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY (clientEnderecoID) REFERENCES endereco(enderecoID);
+
 
 CREATE TABLE IF NOT EXISTS bankCard (
     cardID INT AUTO_INCREMENT PRIMARY KEY,
@@ -76,15 +78,37 @@ CREATE TABLE IF NOT EXISTS car (
 ALTER TABLE car ADD CONSTRAINT fk_car_unidade FOREIGN KEY (currentBranch) REFERENCES branch(branchID);
 
 CREATE TABLE IF NOT EXISTS rent (
+    rentID INT AUTO_INCREMENT PRIMARY KEY,
     rentUserID INT NOT NULL,
     rentCarID INT NOT NULL,
     rentDate DATE DEFAULT CURRENT_DATE(),
     dataDevolucao DATE
 );
 
-ALTER TABLE RENT ADD CONSTRAINT pk_rent PRIMARY KEY (rentUserID, rentCarID);
 ALTER TABLE rent ADD CONSTRAINT fk_rent_user FOREIGN KEY (rentUserID) REFERENCES user(userID);
 ALTER TABLE rent ADD CONSTRAINT fk_rent_car FOREIGN KEY (rentCarID) REFERENCES car(carID);
+
+
+
+
+
+-- PROCEDURES
+
+DELIMITER $$
+CREATE PROCEDURE insert_endereco(IN newCep VARCHAR(8), IN newEstado VARCHAR(255), IN newCidade VARCHAR(255), IN newRua VARCHAR(255), IN newNumero VARCHAR(255))
+BEGIN
+	IF EXISTS(SELECT * FROM endereco WHERE cep = newCep AND numero = newNumero) THEN
+    	BEGIN
+        	SELECT enderecoID FROM endereco WHERE cep = newCep AND numero = newNumero;
+        END;
+    ELSE
+    	BEGIN
+        	INSERT INTO endereco (estado, cidade, rua, numero, cep) VALUES (newEstado, newCidade, newRua, newNumero, newCep);
+        	SELECT enderecoID FROM endereco WHERE cep = newCep AND numero = newNumero;
+        END;
+    END IF;
+END$$
+DELIMITER ;
 
 
 
