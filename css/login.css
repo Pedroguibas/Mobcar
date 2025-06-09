@@ -96,6 +96,14 @@
     box-shadow: none;
 } 
 
+.passwordRequirement.invalid {
+    color: red;
+}
+
+.passwordRequirement.valid {
+    color: #1acc1a;
+}
+
 @media screen and (max-width: 991px) {
     #loginBannerContainer {
         display: none;

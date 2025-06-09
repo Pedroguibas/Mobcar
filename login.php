@@ -23,11 +23,17 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                 <img src="assets/brand-white.png" alt="Logo Mobcar Branca" class="col-md-3 col-4">
             </aside>
             <section id="loginFormContainer" class="d-flex flex-column align-items-center justify-content-center col-12 col-lg-6">
+                <header id="loginFormHeader" class="d-flex align-items-center gap-2 col-10">
+                    <div id="loginFormHeaderBrand" class="col-2">
+                        <img src="assets/logo.png" alt="Logo Mobcar" class="w-100">
+                    </div>
+                    <h1>MOBCAR</h1>
+                </header>
                 <div id="login_signup_selector" class="left d-flex col-10 mb-5">
-                    <button id="loginSelectorBtn" class="col-6">Log-in</button>
-                    <button id="signupSelectorBtn" class="col-6">Sign-up</button>
+                    <button tabindex="-1" id="loginSelectorBtn" class="col-6">Log-in</button>
+                    <button tabindex="-1" id="signupSelectorBtn" class="col-6">Sign-up</button>
                 </div>
-                <div id="loginForm" class="mt-5 col-10">
+                <div id="loginForm" class="col-10">
                     <form action="" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
                             <input type="email" class="form-control mb-4" id="loginEmailInput" placeholder="E-mail">
@@ -36,9 +42,55 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             <input type="password" class="form-control" id="loginPasswordInput" placeholder="senha">
                             <span class="invalid-feedback mt-1">E-mail ou senha inválidos.</span>
                         </div>
-                        <div id="submitBtnContainer" class="d-flex justify-content-end col-10">
+                        <div id="submitBtnContainer" class="d-flex justify-content-between col-10">
+                            <a href="#">Esqueceu sua senha?</a>
                             <button class="btn btn-primary col-3 col-md-4 col-lg-3 p-2">Log-in</button>
                         </div>
+                    </form>
+                </div>
+                <div id="signupForm" class="d-none col-10">
+                    <form action="" class="d-flex flex-column align-items-center col-12">
+                        <div class="form-group col-10 mb-5">
+                            <input type="email" class="form-control" id="signupEmailInput" placeholder="Email">
+                        </div>
+                        <div class="form-group col-10 mb-5">
+                            <input type="text" class="form-control" id="signupNameInput" placeholder="Nome Completo">
+                        </div>
+                        <div class="form-group col-10 mb-5">
+                            <input type="text" class="form-control" id="signupCnhInput" placeholder="Carteira Nacional de habilitação">
+                        </div>
+                        <div class="form-group col-10 mb-5">
+                            <input type="text" class="form-control" id="signupCepInput" maxlength="9" placeholder="CEP">
+                            <span class="invalid-feedback">CEP inválido.</span>
+                            <div class="d-flex justify-content-center">
+                                <div id="searchingCpfSpinner" class="spinner-border mt-3" style="display: none;" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-10 mb-5">
+                            <input type="text" class="form-control mb-5" id="signupStateInput" placeholder="Estado" disabled>
+                            <input type="text" class="form-control mb-5" id="signupCityInput" placeholder="Cidade" disabled>
+                            <input type="text" class="form-control mb-5" id="signupStreetInput" placeholder="Rua" disabled>
+                            <input type="number" class="form-control" id="signupNumberInput" placeholder="Número">
+                        </div>
+                        <div class="form-group col-10 mb-4">
+                            <input type="password" class="form-control" id="signupPasswordInput" placeholder="Senha">
+                        </div>
+                        <div id="passwordRequirementsContainer">
+                            <span id="passwordRequirementsTitle" class="mb-3">Sua senha deve conter ao menos:</span>
+                            <ul id="passwordRequirementsList" class="mb-4">
+                                <li class="passwordRequirement">Uma letra maiúscula</li>
+                                <li class="passwordRequirement">Uma letra minúscula</li>
+                                <li class="passwordRequirement">Um número</li>
+                                <li class="passwordRequirement">Um caractere especial (@$!%*#?&+-)</li>
+                            </ul>
+                        </div>
+                        <div class="form-group col-10 mb-5">
+                            <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Senha">
+                            <span class="invalid-feedback">As senhas não conferem.</span>
+                        </div>
+                        
                     </form>
                 </div>
             </section>
