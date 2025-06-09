@@ -22,16 +22,16 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
             <aside id="loginBannerContainer" class="col-lg-6">
                 <img src="assets/brand-white.png" alt="Logo Mobcar Branca" class="col-md-3 col-4">
             </aside>
-            <section id="loginFormContainer" class="d-flex flex-column align-items-center justify-content-center col-12 col-lg-6">
-                <header id="loginFormHeader" class="d-flex align-items-center gap-2 col-10">
+            <section id="loginFormContainer" class="d-flex flex-column align-items-center col-12 col-lg-6">
+                <header id="loginFormHeader" class="d-flex align-items-center gap-2 col-10 mt-5">
                     <div id="loginFormHeaderBrand" class="col-2">
                         <img src="assets/logo.png" alt="Logo Mobcar" class="w-100">
                     </div>
                     <h1>MOBCAR</h1>
                 </header>
                 <div id="login_signup_selector" class="left d-flex col-10 mb-5">
-                    <button tabindex="-1" id="loginSelectorBtn" class="col-6">Log-in</button>
-                    <button tabindex="-1" id="signupSelectorBtn" class="col-6">Sign-up</button>
+                    <button tabindex="-1" id="loginSelectorBtn" class="col-6">Entrar</button>
+                    <button tabindex="-1" id="signupSelectorBtn" class="col-6">Registrar</button>
                 </div>
                 <div id="loginForm" class="col-10">
                     <form action="" method="POST" class="d-flex flex-column align-items-center col-12">
@@ -90,7 +90,9 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Senha">
                             <span class="invalid-feedback">As senhas não conferem.</span>
                         </div>
-                        
+                        <div class="d-flex justify-content-end col-10">
+                            <button class="btn btn-primary">Registrar</button>
+                        </div>
                     </form>
                 </div>
             </section>
