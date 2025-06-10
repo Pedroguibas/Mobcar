@@ -3,27 +3,27 @@ CREATE DATABASE IF NOT EXISTS mobcar;
 USE mobcar;
 
 
-CREATE TABLE IF NOT EXISTS endereco (
-    enderecoID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS address (
+    addressID INT AUTO_INCREMENT PRIMARY KEY,
     cep VARCHAR(8) NOT NULL,
-    estado VARCHAR(255) NOT NULL,
-    cidade VARCHAR(255) NOT NULL,
-    rua VARCHAR(255) NOT NULL,
-    numero VARCHAR(255) NOT NULL
+    state VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    number VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user (
     userID INT AUTO_INCREMENT PRIMARY KEY,
     userName VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    userPassword TEXT(1000) NOT NULL,
+    userPassword CHAR(32) NOT NULL,
     registerDate DATE DEFAULT CURRENT_DATE()
 );
 
 CREATE TABLE IF NOT EXISTS client (
     clientID INT,
     cnh VARCHAR(11),
-    clientEnderecoID INT NOT NULL
+    clientAddressID INT NOT NULL
 );
 
 ALTER TABLE client
@@ -35,7 +35,7 @@ ON UPDATE CASCADE;
 
 ALTER TABLE client ADD CONSTRAINT pk_client PRIMARY KEY (clientID, cnh);
 
-ALTER TABLE client ADD CONSTRAINT fk_clientEndereco FOREIGN KEY (clientEnderecoID) REFERENCES endereco(enderecoID);
+ALTER TABLE client ADD CONSTRAINT fk_clientAddress FOREIGN KEY (clientAddressID) REFERENCES address(addressID);
 
 
 CREATE TABLE IF NOT EXISTS bankCard (
@@ -58,10 +58,10 @@ ALTER TABLE clientCard ADD CONSTRAINT pk_clientCard PRIMARY KEY (clientCard_card
 CREATE TABLE IF NOT EXISTS branch (
     branchID INT AUTO_INCREMENT PRIMARY KEY,
     branchName VARCHAR(255) NOT NULL,
-    branchEnderecoID INT NOT NULL
+    branchAddressID INT NOT NULL
 );
 
-ALTER TABLE branch ADD CONSTRAINT fk_unidade_endereco FOREIGN KEY (branchEnderecoID) REFERENCES endereco(enderecoID);
+ALTER TABLE branch ADD CONSTRAINT fk_unidade_address FOREIGN KEY (branchAddressID) REFERENCES address(addressID);
 
 
 CREATE TABLE IF NOT EXISTS car (
@@ -95,20 +95,56 @@ ALTER TABLE rent ADD CONSTRAINT fk_rent_car FOREIGN KEY (rentCarID) REFERENCES c
 -- PROCEDURES
 
 DELIMITER $$
-CREATE PROCEDURE insert_endereco(IN newCep VARCHAR(8), IN newEstado VARCHAR(255), IN newCidade VARCHAR(255), IN newRua VARCHAR(255), IN newNumero VARCHAR(255))
+CREATE PROCEDURE insert_address(
+    IN newCep VARCHAR(8),
+    IN newState VARCHAR(255),
+    IN newCity VARCHAR(255),
+    IN newStreet VARCHAR(255),
+    IN newNumber VARCHAR(255),
+    OUT newAddressID INT
+)
 BEGIN
-	IF EXISTS(SELECT * FROM endereco WHERE cep = newCep AND numero = newNumero) THEN
+	IF EXISTS(SELECT * FROM address WHERE cep = newCep AND number = newNumber) THEN
     	BEGIN
-        	SELECT enderecoID FROM endereco WHERE cep = newCep AND numero = newNumero;
+        	SELECT addressID FROM address WHERE cep = newCep AND number = newNumber;
         END;
     ELSE
     	BEGIN
-        	INSERT INTO endereco (estado, cidade, rua, numero, cep) VALUES (newEstado, newCidade, newRua, newNumero, newCep);
-        	SELECT enderecoID FROM endereco WHERE cep = newCep AND numero = newNumero;
+        	INSERT INTO address (cep, state, city, street, number) VALUES (newCep, newState, newCity, newStreet, newNumber);
+        	SELECT addressID FROM address WHERE cep = newCep AND number = newNumber INTO newAddressID;
         END;
     END IF;
 END$$
+
+CREATE PROCEDURE insert_client(
+    IN newEmail VARCHAR(255),
+    IN newUserName VARCHAR(255),
+    IN newPassword CHAR(32),
+    IN newCnh VARCHAR(11),
+    IN newCep VARCHAR(8),
+    IN newState VARCHAR(255),
+    IN newCity VARCHAR(255), 
+    IN newStreet VARCHAR(255),
+    IN newNumber VARCHAR(255))
+BEGIN
+    DECLARE newAddressID INT;
+
+    INSERT INTO user (userName, email, userPassword) VALUES (newUserName, newEmail, MD5(newPassword));
+
+    CALL insert_address(newCep, newState, newCity, newStreet, newNumber, newAddressID);
+
+    INSERT INTO client (clientID, cnh, clientAddressID)
+    VALUES (
+        (SELECT userID FROM user WHERE email = newEmail AND userName = newUserName AND userPassword = MD5(newPassword)),
+        newCnh,
+        newAddressID
+    );
+
+END$$
+
 DELIMITER ;
+
+
 
 
 
@@ -122,15 +158,16 @@ SELECT
     U.userName,
     U.email,
     U.registerDate,
+    U.userPassword,
     E.cep,
-    E.estado,
-    E.cidade,
-    E.rua,
-    E.numero,
+    E.state,
+    E.city,
+    E.street,
+    E.number,
     C.cnh
 FROM user U
 INNER JOIN client C ON C.clientID = U.userID
-INNER JOIN endereco E ON E.enderecoID = C.clientEnderecoID;
+INNER JOIN address E ON E.addressID = C.clientAddressID;
 
 
 

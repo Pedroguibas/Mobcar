@@ -71,6 +71,8 @@ $('#signupCepInput').on('input', function() {
             $('#signupCityInput').val('');
             $('#signupStreetInput').val('');
         }
+        if (str.length > 9)
+            str = str.slice(0, str.length-1);
         $(this).val(str);
         
     } else {

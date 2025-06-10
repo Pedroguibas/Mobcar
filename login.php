@@ -48,7 +48,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                         </div>
                     </form>
                 </div>
-                <div id="signupForm" class="d-none col-10">
+                <div id="signupForm" class="d-none col-10 pb-5">
                     <form action="<?= $baseurl ?>forms/userSignup.php" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
                             <input type="email" class="form-control" name="email" id="signupEmailInput" placeholder="Email" required>
@@ -57,7 +57,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             <input type="text" class="form-control" name="name" id="signupNameInput" placeholder="Nome Completo" required>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control" name="cnh" id="signupCnhInput" placeholder="Carteira Nacional de habilitação" required>
+                            <input type="text" class="form-control" name="cnh" id="signupCnhInput" maxlength="11" placeholder="Carteira Nacional de habilitação" required>
                         </div>
                         <div class="form-group col-10 mb-5">
                             <input type="text" class="form-control" name="cep" id="signupCepInput" maxlength="9" placeholder="CEP" required>

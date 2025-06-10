@@ -16,7 +16,7 @@ if (isset($userInfo)) {
     $_SESSION['userID'] = $userInfo['userID'];
     $_SESSION['userName'] = $userInfo['userName'];
     $_SESSION['userEmail'] = $userInfo['email'];
-    $_SESSION['userAddress'] = array('cep' => $userInfo['cep'], 'state' => $userInfo['estado'], 'city' => $userInfo['cidade'], 'street' => $userInfo['rua'], 'houseNumber' => $userInfo['numero']);
+    $_SESSION['userAddress'] = array('cep' => $userInfo['cep'], 'state' => $userInfo['state'], 'city' => $userInfo['city'], 'street' => $userInfo['street'], 'houseNumber' => $userInfo['number']);
 } else {
     header('Location: ' . $_SESSION['baseUrl'] . 'login.php');
 }
