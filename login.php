@@ -88,7 +88,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             </ul>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Senha" required>
+                            <input type="password" class="form-control" id="signupPasswordConfirmationInput" placeholder="Confirme sua senha" required>
                             <span class="invalid-feedback">As senhas não conferem.</span>
                         </div>
                         <div class="d-flex justify-content-end col-10">

@@ -8,10 +8,12 @@ function isDigit(str) {
 }
 
 function fetchAddress(str) {
+    let result = true;
     $.ajax({
         url: 'https://viacep.com.br/ws/' + str + '/json/',
         success: function(r) {
             if (!("erro" in r)) {
+                result = false;
                 $('#signupStateInput').val(r.estado);
                 $('#signupCityInput').val(r.localidade);
                 $('#signupStreetInput').val(r.logradouro);
@@ -23,6 +25,7 @@ function fetchAddress(str) {
         $('#searchingCpfSpinner').hide();
         $('#signupCepInput').prop('disabled', false);
     });
+    return result;
 }
 
 
@@ -89,7 +92,14 @@ function validatePassword() {
 
     return false;
 }
+function validatePasswordConfirmation() {
+    
+    if ($('#signupPasswordConfirmationInput').val() == $('#signupPasswordInput').val())
+        return true;
 
+    $('#signupPasswordConfirmationInput').addClass('is-invalid');
+    return false;
+}
 
 $('#loginSelectorBtn').on('click', function() {
     $(this).parent().addClass('left');
@@ -107,6 +117,13 @@ $('#signupSelectorBtn').on('click', function() {
 
 $('input').on('focus', function() {
     $(this).removeClass('is-invalid')
+});
+
+$('#signupCepInput').on('focus', function() {
+    $(this).removeClass('is-invalid')
+    $('#signupStateInput').removeClass('is-invalid');
+    $('#signupCityInput').removeClass('is-invalid');
+    $('#signupStreetInput').removeClass('is-invalid');
 });
 
 $('#signupCepInput').on('input', function() {
@@ -163,12 +180,22 @@ $('#signupForm form').on('submit', function(e) {
     let count=0;
 
     cpf = $('#signupCepInput').val()
-    $('#signupCepInput').val(cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length));
+    cpf = cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length);
+    $('#signupCepInput').val(cpf);
 
-    if (validatePassword())
-        count++;
-    else 
+    if (!fetchAddress(cpf)) {
+        $('#signupStateInput').addClass('is-invalid');
+        $('#signupCityInput').addClass('is-invalid');
+        $('#signupStreetInput').addClass('is-invalid');
+    }
+
+    if (!validatePassword()) {
         $('#signupPasswordInput').addClass('is-invalid');
+        count++;
+    }
+
+    if (!validatePasswordConfirmation())
+        count++;
     
     if (count == 0)
         $('#signupForm form')[0].submit();
