@@ -25,6 +25,72 @@ function fetchAddress(str) {
     });
 }
 
+
+function validatePassword() {
+    let password = $('#signupPasswordInput').val();
+    let count = 0;
+
+    if (password.length < 8 || password.length >30) {
+        $('#passwordLengthRequirement').addClass('invalid');
+        $('#passwordLengthRequirement').removeClass('valid');
+        count++;
+    } else {
+        $('#passwordLengthRequirement').addClass('valid');
+        $('#passwordLengthRequirement').removeClass('invalid');
+    }
+
+    if (!(/[A-Z]/.test(password))) {
+        count++;
+        $('#passwordCapRequirement').addClass('invalid');
+        $('#passwordCapRequirement').removeClass('valid');
+    } else {
+        $('#passwordCapRequirement').addClass('valid');
+        $('#passwordCapRequirement').removeClass('invalid');
+    }
+
+    if (!(/[a-z]/.test(password))) {
+        count++;
+        $('#passwordLowerRequirement').addClass('invalid');
+        $('#passwordLowerRequirement').removeClass('valid');
+    } else {
+        $('#passwordLowerRequirement').addClass('valid');
+        $('#passwordLowerRequirement').removeClass('invalid');
+    }
+
+    if (!(/[1-9]/.test(password))) {
+        count++;
+        $('#passwordNumberRequirement').addClass('invalid');
+        $('#passwordNumberRequirement').removeClass('valid');
+    } else {
+        $('#passwordNumberRequirement').addClass('valid');
+        $('#passwordNumberRequirement').removeClass('invalid');
+    }
+
+    if (password.indexOf('@') == -1 &&
+        password.indexOf('$') == -1 &&
+        password.indexOf('!') == -1 && 
+        password.indexOf('%') == -1 &&
+        password.indexOf('*') == -1 &&
+        password.indexOf('#') == -1 &&
+        password.indexOf('?') == -1 &&
+        password.indexOf('&') == -1 &&
+        password.indexOf('+') == -1 &&
+        password.indexOf('-') == -1) {
+
+        $('#passwordSpecialCharRequirement').addClass('invalid');
+        count++
+    } else {
+        $('#passwordSpecialCharRequirement').removeClass('invalid');
+        $('#passwordSpecialCharRequirement').addClass('valid');
+    }
+    
+    if (count == 0)
+        return true;
+
+    return false;
+}
+
+
 $('#loginSelectorBtn').on('click', function() {
     $(this).parent().addClass('left');
     $(this).parent().removeClass('right'); 
@@ -39,7 +105,7 @@ $('#signupSelectorBtn').on('click', function() {
     $('#signupForm').removeClass('d-none');
 });
 
-$('#signupCepInput').on('focus', function() {
+$('input').on('focus', function() {
     $(this).removeClass('is-invalid')
 });
 
@@ -81,3 +147,29 @@ $('#signupCepInput').on('input', function() {
         $('#signupStreetInput').val('');
     }
 });
+
+$('#signupPasswordInput').on('input', function() {
+    if ($(this).val().length == 0) {
+        $('.passwordRequirement').removeClass('invalid')
+        $('.passwordRequirement').removeClass('valid')
+    } else {
+        validatePassword();
+    }
+});
+
+$('#signupForm form').on('submit', function(e) {
+    e.preventDefault();
+
+    let count=0;
+
+    cpf = $('#signupCepInput').val()
+    $('#signupCepInput').val(cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length));
+
+    if (validatePassword())
+        count++;
+    else 
+        $('#signupPasswordInput').addClass('is-invalid');
+    
+    if (count == 0)
+        $('#signupForm form')[0].submit();
+})

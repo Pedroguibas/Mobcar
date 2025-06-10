@@ -96,6 +96,10 @@
     box-shadow: none;
 } 
 
+.passwordRequirement {
+    color: #00000080;
+}
+
 .passwordRequirement.invalid {
     color: red;
 }

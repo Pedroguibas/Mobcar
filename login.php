@@ -75,15 +75,16 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             <input type="text" class="form-control" name="houseNumber" id="signupNumberInput" placeholder="Número" required>
                         </div>
                         <div class="form-group col-10 mb-4">
-                            <input type="password" class="form-control" name="password" id="signupPasswordInput" placeholder="Senha" required>
+                            <input type="password" class="form-control" name="password" id="signupPasswordInput" maxlength="30" placeholder="Senha" required>
                         </div>
                         <div id="passwordRequirementsContainer">
                             <span id="passwordRequirementsTitle" class="mb-3">Sua senha deve conter ao menos:</span>
                             <ul id="passwordRequirementsList" class="mb-4">
-                                <li class="passwordRequirement">Uma letra maiúscula</li>
-                                <li class="passwordRequirement">Uma letra minúscula</li>
-                                <li class="passwordRequirement">Um número</li>
-                                <li class="passwordRequirement">Um caractere especial (@$!%*#?&+-)</li>
+                                <li id="passwordLengthRequirement" class="passwordRequirement">entre 8 e 30 caracteres</li>
+                                <li id="passwordCapRequirement" class="passwordRequirement">Uma letra maiúscula</li>
+                                <li id="passwordLowerRequirement" class="passwordRequirement">Uma letra minúscula</li>
+                                <li id="passwordNumberRequirement" class="passwordRequirement">Um número</li>
+                                <li id="passwordSpecialCharRequirement" class="passwordRequirement">Um caractere especial (@$!%*#?&+-)</li>
                             </ul>
                         </div>
                         <div class="form-group col-10 mb-5">

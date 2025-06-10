@@ -33,7 +33,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav container-fluid d-flex justify-content-end">
+                    <ul class="navbar-nav container-fluid d-flex justify-content-end align-items-center">
                         <li class="nav-item">
                             <a href="<?= $baseurl ?>" class="nav-link <?= $active == 'home' ? 'active' : '' ?> d-flex justify-content-end">Home</a>
                         </li>
