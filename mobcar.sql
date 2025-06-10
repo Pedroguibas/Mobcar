@@ -114,6 +114,27 @@ DELIMITER ;
 
 
 
+-- VIEWS
+
+CREATE VIEW vw_client AS
+SELECT 
+	U.userID,
+    U.userName,
+    U.email,
+    U.registerDate,
+    E.cep,
+    E.estado,
+    E.cidade,
+    E.rua,
+    E.numero,
+    C.cnh
+FROM user U
+INNER JOIN client C ON C.clientID = U.userID
+INNER JOIN endereco E ON E.enderecoID = C.clientEnderecoID;
+
+
+
+
 
 CREATE USER IF NOT EXISTS mobcar IDENTIFIED BY '911643';
 GRANT ALL ON mobcar.* TO mobcar IDENTIFIED BY '911643';

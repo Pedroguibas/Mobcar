@@ -34,7 +34,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                     <button tabindex="-1" id="signupSelectorBtn" class="col-6">Registrar</button>
                 </div>
                 <div id="loginForm" class="col-10">
-                    <form action="" method="POST" class="d-flex flex-column align-items-center col-12">
+                    <form action="<?= $baseurl ?>forms/auth.php" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
                             <input type="email" class="form-control mb-4" name="email" id="loginEmailInput" placeholder="E-mail">
                         </div>
@@ -69,9 +69,9 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                             </div>
                         </div>
                         <div class="form-group col-10 mb-5">
-                            <input type="text" class="form-control mb-5" name="state" id="signupStateInput" placeholder="Estado" readonly required>
-                            <input type="text" class="form-control mb-5" name="city" id="signupCityInput" placeholder="Cidade" readonly required>
-                            <input type="text" class="form-control mb-5" name="street" id="signupStreetInput" placeholder="Rua" readonly required>
+                            <input type="text" tabindex="-1" class="form-control disabled mb-5" name="state" id="signupStateInput" placeholder="Estado" readonly required>
+                            <input type="text" tabindex="-1" class="form-control disabled mb-5" name="city" id="signupCityInput" placeholder="Cidade" readonly required>
+                            <input type="text" tabindex="-1" class="form-control disabled mb-5" name="street" id="signupStreetInput" placeholder="Rua" readonly required>
                             <input type="text" class="form-control" name="houseNumber" id="signupNumberInput" placeholder="Número" required>
                         </div>
                         <div class="form-group col-10 mb-4">

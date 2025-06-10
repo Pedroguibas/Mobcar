@@ -104,6 +104,15 @@
     color: #1acc1a;
 }
 
+.form-control.disabled {
+    background: #dddddd;
+    cursor: default;
+}
+
+.form-control.disabled:focus {
+    border-color: transparent !important;
+}
+
 @media screen and (max-width: 991px) {
     #loginFormContainer {
         max-height: fit-content;

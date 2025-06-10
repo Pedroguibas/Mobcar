@@ -38,10 +38,7 @@
                             <a href="<?= $baseurl ?>" class="nav-link <?= $active == 'home' ? 'active' : '' ?> d-flex justify-content-end">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?= $active == 'signup' ? 'active' : '' ?> d-flex justify-content-end">Sign-up</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link <?= $active == 'login' ? 'active' : '' ?> d-flex justify-content-end">Log-in</a>
+                            <a href="<?= $baseurl ?>forms/logout.php"><button class="btn btn-outline-danger">Sair</button></a>
                         </li>
                     </ul>
                 </div>

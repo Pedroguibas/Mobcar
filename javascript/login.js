@@ -79,11 +79,3 @@ $('#signupCepInput').on('input', function() {
         $('#signupStreetInput').val('');
     }
 });
-
-// $('#signupForm form').on('submit', function(e) {
-//     e.preventDefault();
-
-//     $('input[diabled]').prop('disabled', false);
-
-//     $('#signupForm form')[0].submit();
-// })

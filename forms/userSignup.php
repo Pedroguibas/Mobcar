@@ -1,5 +1,6 @@
 <?php
 include_once('../config/db.php');
+session_start();
 
 $name = htmlspecialchars($_POST['name']);
 $email = htmlspecialchars($_POST['email']);
@@ -38,7 +39,12 @@ $stmt = $conn->prepare("INSERT INTO client (clientID, cnh, clientEnderecoID) VAL
 $stmt->execute([':id' => $userID,
                 ':cnh' => $cnh,
                 ':endereco' => $endID]);
-                
 
+$_SESSION['logged'] = true;
+$_SESSION['userID'] = $userID;
+$_SESSION['userName'] = $name;
+$_SESSION['userEmail'] = $email;
+$_SESSION['userAddress'] = array('cep' => $cep, 'state' => $state, 'city' => $city, 'street' => $street, 'houseNumber' => $number);
 
+header('Location: ' . $_SESSION['baseUrl'] . 'index.php');
 ?>
