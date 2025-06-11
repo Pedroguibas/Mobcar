@@ -58,11 +58,12 @@ ALTER TABLE clientCard ADD CONSTRAINT pk_clientCard PRIMARY KEY (clientCard_card
 CREATE TABLE IF NOT EXISTS branch (
     branchID INT AUTO_INCREMENT PRIMARY KEY,
     branchName VARCHAR(255) NOT NULL,
-    branchAddressID INT NOT NULL
+    branchCep VARCHAR(8) NOT NULL,
+    branchState VARCHAR(255) NOT NULL,
+    branchCity VARCHAR(255) NOT NULL,
+    branchStreet VARCHAR(255) NOT NULL,
+    branchNumber VARCHAR(255) NOT NULL
 );
-
-ALTER TABLE branch ADD CONSTRAINT fk_unidade_address FOREIGN KEY (branchAddressID) REFERENCES address(addressID);
-
 
 CREATE TABLE IF NOT EXISTS car (
     carID INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,9 +93,56 @@ ALTER TABLE rent ADD CONSTRAINT fk_rent_car FOREIGN KEY (rentCarID) REFERENCES c
 
 
 
--- PROCEDURES
+
+-- FUNCTIONS
 
 DELIMITER $$
+CREATE FUNCTION count_address_clients(param_addressID INT, param_clientID INT)
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE result INT;
+
+    SELECT COUNT(*) 
+    INTO result
+    FROM address A
+    INNER JOIN client C ON A.addressID = C.clientAddressID
+    WHERE A.addressID = param_addressID AND C.clientID <> param_clientID;
+
+    RETURN result;
+END$$
+
+CREATE FUNCTION get_addressID_from_user(param_user_ID INT)
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE result INT DEFAULT -1;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND
+        SET result = -1;
+
+    SELECT clientAddressID
+    INTO result
+    FROM client 
+    WHERE clientID = param_user_ID;
+
+    RETURN result;
+
+END$$
+
+
+
+
+
+
+
+
+
+-- PROCEDURES
+
+
 CREATE PROCEDURE insert_address(
     IN newCep VARCHAR(8),
     IN newState VARCHAR(255),
@@ -142,7 +190,7 @@ BEGIN
 
 END$$
 
-DELIMITER ;
+
 
 
 
