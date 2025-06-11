@@ -15,14 +15,14 @@ CREATE TABLE IF NOT EXISTS address (
 CREATE TABLE IF NOT EXISTS user (
     userID INT AUTO_INCREMENT PRIMARY KEY,
     userName VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     userPassword CHAR(32) NOT NULL,
     registerDate DATE DEFAULT CURRENT_DATE()
 );
 
 CREATE TABLE IF NOT EXISTS client (
     clientID INT,
-    cnh VARCHAR(11),
+    cnh VARCHAR(11) UNIQUE,
     clientAddressID INT NOT NULL
 );
 
@@ -41,7 +41,7 @@ ALTER TABLE client ADD CONSTRAINT fk_clientAddress FOREIGN KEY (clientAddressID)
 CREATE TABLE IF NOT EXISTS bankCard (
     cardID INT AUTO_INCREMENT PRIMARY KEY,
     cardName VARCHAR(255) NOT NULL,
-    cardNumber VARCHAR(16) NOT NULL,
+    cardNumber VARCHAR(16) NOT NULL UNIQUE,
     cvv CHAR(3) NOT NULL,
     expiryDate char(5) NOT NULL
 );
@@ -106,7 +106,7 @@ CREATE PROCEDURE insert_address(
 BEGIN
 	IF EXISTS(SELECT * FROM address WHERE cep = newCep AND number = newNumber) THEN
     	BEGIN
-        	SELECT addressID FROM address WHERE cep = newCep AND number = newNumber;
+        	SELECT addressID FROM address WHERE cep = newCep AND number = newNumber INTO newAddressID;
         END;
     ELSE
     	BEGIN
@@ -159,15 +159,15 @@ SELECT
     U.email,
     U.registerDate,
     U.userPassword,
-    E.cep,
-    E.state,
-    E.city,
-    E.street,
-    E.number,
+    A.cep,
+    A.state,
+    A.city,
+    A.street,
+    A.number,
     C.cnh
 FROM user U
 INNER JOIN client C ON C.clientID = U.userID
-INNER JOIN address E ON E.addressID = C.clientAddressID;
+INNER JOIN address A ON A.addressID = C.clientAddressID;
 
 
 

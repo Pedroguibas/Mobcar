@@ -28,6 +28,25 @@ function fetchAddress(str) {
     return result;
 }
 
+async function validateEmail() {
+    let returnBool = true;
+    let emailValue = $('#signupEmailInput').val();
+    await $.ajax({
+        url: baseurl + 'forms/validateEmail.php',
+        method: 'GET',
+        data: {
+            email: emailValue
+        },
+        success: function(r) {
+            if (r >= 1) {
+                returnBool = false;
+                $('#signupEmailInput').addClass('is-invalid');
+            }
+        }
+    });
+    
+    return returnBool;
+}
 
 function validatePassword() {
     let password = $('#signupPasswordInput').val();
@@ -174,7 +193,9 @@ $('#signupPasswordInput').on('input', function() {
     }
 });
 
-$('#signupForm form').on('submit', function(e) {
+
+// Cancels form submition for validation and submits if every field fits the criteria
+$('#signupForm form').on('submit', async function(e) {
     e.preventDefault();
 
     let count=0;
@@ -196,7 +217,13 @@ $('#signupForm form').on('submit', function(e) {
 
     if (!validatePasswordConfirmation())
         count++;
+
+    if (!(await validateEmail())) {
+        count++;
+        $('#signupEmailInput').get(0).scrollIntoView({behavior: 'smooth'});
+    }
+    
     
     if (count == 0)
         $('#signupForm form')[0].submit();
-})
+});

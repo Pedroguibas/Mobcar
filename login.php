@@ -12,10 +12,11 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
         <meta charset="utf-8">
         <title>Mobcar - Login</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<?= $baseurl ?>css/style.css">
         <link rel="icon" type="image/x-icon" href="<?= $baseurl ?>assets/favicon.ico">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>let baseurl = '<?= $baseurl ?>';</script>
     </head>
     <body>
         <main id="loginMain" class="row m-0">
@@ -52,6 +53,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                     <form action="<?= $baseurl ?>forms/userSignup.php" method="POST" class="d-flex flex-column align-items-center col-12">
                         <div class="form-group col-10 mb-5">
                             <input type="email" class="form-control" name="email" id="signupEmailInput" placeholder="Email" required>
+                            <span class="invalid-feedback mt-1">E-mail já cadastrado.</span>
                         </div>
                         <div class="form-group col-10 mb-5">
                             <input type="text" class="form-control" name="name" id="signupNameInput" placeholder="Nome Completo" required>
