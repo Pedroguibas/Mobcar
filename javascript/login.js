@@ -200,9 +200,13 @@ $('#signupForm form').on('submit', async function(e) {
 
     let count=0;
 
-    cpf = $('#signupCepInput').val()
-    cpf = cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length);
-    $('#signupCepInput').val(cpf);
+
+    let cpf = $('#signupCepInput').val();
+    if (cpf.indexOf('-') != -1) {
+        $('#signupCepInput').val('');
+        cpf = cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length);
+        $('#signupCepInput').val(cpf);
+    }
 
     if (!fetchAddress(cpf)) {
         $('#signupStateInput').addClass('is-invalid');

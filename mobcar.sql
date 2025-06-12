@@ -113,24 +113,6 @@ BEGIN
     RETURN result;
 END$$
 
-CREATE FUNCTION get_addressID_from_user(param_user_ID INT)
-RETURNS INT
-DETERMINISTIC
-READS SQL DATA
-BEGIN
-    DECLARE result INT DEFAULT -1;
-    
-    DECLARE CONTINUE HANDLER FOR NOT FOUND
-        SET result = -1;
-
-    SELECT clientAddressID
-    INTO result
-    FROM client 
-    WHERE clientID = param_user_ID;
-
-    RETURN result;
-
-END$$
 
 
 
@@ -190,6 +172,37 @@ BEGIN
 
 END$$
 
+
+
+
+
+
+
+-- TRIGGERS
+
+CREATE TRIGGER delete_address_and_client_on_user_delete
+BEFORE DELETE ON user
+FOR EACH ROW
+BEGIN
+    DECLARE old_address INT;
+    DECLARE client_count INT;
+
+    SELECT clientAddressID INTO old_address
+    FROM client
+    WHERE clientID = OLD.userID;
+
+    DELETE FROM client WHERE clientID = OLD.userID;
+
+    SELECT COUNT(*) INTO client_count
+    FROM client
+    WHERE clientAddressID = old_address;
+
+    IF client_count = 0 THEN
+        DELETE FROM address WHERE addressID = old_address;
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 
