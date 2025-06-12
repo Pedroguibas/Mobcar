@@ -60,12 +60,13 @@ if (isset($_SESSION['logged']) && $_SESSION['logged'] == 1)
                         </div>
                         <div class="form-group col-10 mb-5">
                             <input type="text" class="form-control" name="cnh" id="signupCnhInput" maxlength="11" placeholder="Carteira Nacional de habilitação" required>
+                            <span class="invalid-feedback mt-1">CNH inválida ou já cadastrada.</span>
                         </div>
                         <div class="form-group col-10 mb-5">
                             <input type="text" class="form-control" name="cep" id="signupCepInput" maxlength="9" placeholder="CEP" required>
                             <span class="invalid-feedback">CEP inválido.</span>
                             <div class="d-flex justify-content-center">
-                                <div id="searchingCpfSpinner" class="spinner-border mt-3" style="display: none;" role="status">
+                                <div id="searchingCepSpinner" class="spinner-border mt-3" style="display: none;" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>

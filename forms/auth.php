@@ -11,7 +11,7 @@ $stmt->execute([':password' => $password,
                 ':email' => $email]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (isset($userInfo)) {
+if ($stmt->rowCount() > 0) {
     $_SESSION['logged'] = true;
     $_SESSION['userID'] = $userInfo['userID'];
     $_SESSION['userName'] = $userInfo['userName'];

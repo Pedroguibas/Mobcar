@@ -22,7 +22,7 @@ function fetchAddress(str) {
             }
         }
     }).then(function() {
-        $('#searchingCpfSpinner').hide();
+        $('#searchingcepSpinner').hide();
         $('#signupCepInput').prop('disabled', false);
     });
     return result;
@@ -46,6 +46,61 @@ async function validateEmail() {
     });
     
     return returnBool;
+}
+
+async function validateDriverLicense() {
+    let cnh = $('#signupCnhInput').val();
+
+    if (cnh.length != 11 || /^(\d)\1+$/.test(cnh))
+        return false;
+
+     let dsc = 0;
+    let v = [];
+
+    for (let i = 0; i < 9; i++) {
+        v[i] = parseInt(cnh.charAt(i));
+    }
+
+    let j = 9, soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += v[i] * j--;
+    }
+
+    let dv1 = soma % 11;
+    if (dv1 >= 10) {
+        dv1 = 0;
+        dsc = 2;
+    }
+
+    j = 1;
+    soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += v[i] * j++;
+    }
+
+    let dv2 = soma % 11;
+    if (dv2 >= 10) {
+        dv2 = 0;
+        dsc -= 1;
+    }
+
+    if (cnh.substr(9, 2) != `${dv1}${dv2}`)
+        return false;
+
+
+    let response = true;
+    await $.ajax({
+        url: baseurl + 'forms/validateDriverLicense.php',
+        method: 'POST',
+        data: {
+            'cnh': cnh
+        },
+        success: function(r) {
+            if (r>=0)
+                response = false;
+        }
+    });
+    return response;
 }
 
 function validatePassword() {
@@ -111,6 +166,7 @@ function validatePassword() {
 
     return false;
 }
+
 function validatePasswordConfirmation() {
     
     if ($('#signupPasswordConfirmationInput').val() == $('#signupPasswordInput').val())
@@ -165,7 +221,7 @@ $('#signupCepInput').on('input', function() {
         str = str.slice(0,5) + '-' + str.slice(5,str.length);
 
         if (str.length >= 9) {
-            $('#searchingCpfSpinner').show();
+            $('#searchingcepSpinner').show();
             $(this).prop('disabled', true);
             fetchAddress(str.slice(0,5) + str.slice(6,9))
         } else {
@@ -193,6 +249,10 @@ $('#signupPasswordInput').on('input', function() {
     }
 });
 
+$('#signupCnhInput').on('input', function() {
+    $(this).val($(this).val().replace(/\D/g, ''));
+});
+
 
 // Cancels form submition for validation and submits if every field fits the criteria
 $('#signupForm form').on('submit', async function(e) {
@@ -201,14 +261,14 @@ $('#signupForm form').on('submit', async function(e) {
     let count=0;
 
 
-    let cpf = $('#signupCepInput').val();
-    if (cpf.indexOf('-') != -1) {
+    let cep = $('#signupCepInput').val();
+    if (cep.indexOf('-') != -1) {
         $('#signupCepInput').val('');
-        cpf = cpf.slice(0,cpf.indexOf('-')) + cpf.slice(cpf.indexOf('-')+1, cpf.length);
-        $('#signupCepInput').val(cpf);
+        cep = cep.slice(0,cep.indexOf('-')) + cep.slice(cep.indexOf('-')+1, cep.length);
+        $('#signupCepInput').val(cep);
     }
 
-    if (!fetchAddress(cpf)) {
+    if (!fetchAddress(cep)) {
         $('#signupStateInput').addClass('is-invalid');
         $('#signupCityInput').addClass('is-invalid');
         $('#signupStreetInput').addClass('is-invalid');
@@ -222,11 +282,16 @@ $('#signupForm form').on('submit', async function(e) {
     if (!validatePasswordConfirmation())
         count++;
 
+    if (!(await validateDriverLicense())) {
+        count++;
+        $('#signupCnhInput').get(0).scrollIntoView({vehavior: 'smooth'});
+        $('#signupCnhInput').addClass('is-invalid');
+    }
+
     if (!(await validateEmail())) {
         count++;
         $('#signupEmailInput').get(0).scrollIntoView({behavior: 'smooth'});
     }
-    
     
     if (count == 0)
         $('#signupForm form')[0].submit();
